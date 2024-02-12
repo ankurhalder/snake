@@ -69,6 +69,13 @@ def homePage():
 
             message(text, black, -35 + i * 60)
 
+        best_score_text = font.render(
+            "Best Score: " + str(get_high_score()), True, white
+        )
+        display.blit(best_score_text, [width - 150, 10])
+
+        message("Navigate with arrow keys and Enter or E to select", white, 180)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
