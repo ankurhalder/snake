@@ -54,7 +54,7 @@ def homePage():
 
     while home_page:
         display.fill(black)
-        message("Snake Game", white, -50)
+        message("Snake Game By Ankur Halder", white, -150)
 
         pygame.draw.rect(display, green, start_button)
         message("Start Game", black, -35)
