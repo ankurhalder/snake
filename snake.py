@@ -129,7 +129,10 @@ def gameOver(score):
             else:
                 pygame.draw.rect(display, white, button_rect)
 
-            message(text, black, -height // 2 + 165 + i * 60)
+            # Adjust text position to center within each button
+            text_surface = font.render(text, True, black)
+            text_rect = text_surface.get_rect(center=button_rect.center)
+            display.blit(text_surface, text_rect)
 
         best_score_text = font.render(
             "Best Score: " + str(get_high_score()), True, white
