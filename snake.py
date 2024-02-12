@@ -79,6 +79,9 @@ def homePage():
         display.blit(best_score_text, [width - 150, 10])
 
         message("Navigate with arrow keys and Enter or E to select", white, 180)
+        message(
+            "To visit more projects like this, go to ankurhalder.github.io", white, 220
+        )
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -143,6 +146,11 @@ def gameOver(score):
             "Navigate with arrow keys and Enter or E to select",
             white,
             height // 2 - 180,
+        )
+        message(
+            "To visit more projects like this, go to ankurhalder.github.io",
+            white,
+            height // 2 - 140,
         )
 
         for event in pygame.event.get():
