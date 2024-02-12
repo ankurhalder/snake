@@ -62,6 +62,8 @@ def gameLoop():
     score = 0
     high_score = get_high_score()
 
+    health = 3
+
     while not game_over:
 
         while game_close == True:
@@ -113,10 +115,25 @@ def gameLoop():
                 set_high_score(high_score)
 
         if lead_x >= width or lead_x < 0 or lead_y >= height or lead_y < 0:
-            game_close = True
+            health -= 1
+            if health == 0:
+                game_close = True
+            else:
+                lead_x = width / 2
+                lead_y = height / 2
+                snake_list = []
+                snake_length = 1
+
         for segment in snake_list[:-1]:
             if segment == [lead_x, lead_y]:
-                game_close = True
+                health -= 1
+                if health == 0:
+                    game_close = True
+                else:
+                    lead_x = width / 2
+                    lead_y = height / 2
+                    snake_list = []
+                    snake_length = 1
 
         snake_head = []
         snake_head.append(lead_x)
@@ -135,6 +152,9 @@ def gameLoop():
 
         high_score_text = font.render("High Score: " + str(high_score), True, white)
         display.blit(high_score_text, [width - 150, 10])
+
+        health_text = font.render("Health: " + str(health), True, white)
+        display.blit(health_text, [10, 30])
 
         pygame.display.update()
 
