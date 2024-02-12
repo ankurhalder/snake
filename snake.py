@@ -26,9 +26,10 @@ def snake(block_size, snake_list):
         pygame.draw.rect(display, green, [x[0], x[1], block_size, block_size])
 
 
-def message(msg, color):
+def message(msg, color, y_displace=0):
     mesg = font.render(msg, True, color)
-    display.blit(mesg, [width / 6, height / 3])
+    text_rect = mesg.get_rect(center=(width / 2, height / 2 + y_displace))
+    display.blit(mesg, text_rect)
 
 
 def get_high_score():
@@ -42,6 +43,45 @@ def get_high_score():
 def set_high_score(score):
     with open("highscore.txt", "w") as file:
         file.write(str(score))
+
+
+def homePage():
+    home_page = True
+
+    start_button = pygame.Rect(width / 2 - 100, height / 2 - 50, 200, 50)
+    reset_button = pygame.Rect(width / 2 - 100, height / 2 + 10, 200, 50)
+    quit_button = pygame.Rect(width / 2 - 100, height / 2 + 70, 200, 50)
+
+    while home_page:
+        display.fill(black)
+        message("Snake Game", white, -50)
+
+        pygame.draw.rect(display, green, start_button)
+        message("Start Game", black, -35)
+
+        pygame.draw.rect(display, blue, reset_button)
+        message("Reset Best Score", black, 25)
+
+        pygame.draw.rect(display, red, quit_button)
+        message("Quit Game", black, 85)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = event.pos
+                if start_button.collidepoint(mouse_pos):
+                    home_page = False
+                    gameLoop()
+                elif reset_button.collidepoint(mouse_pos):
+                    set_high_score(0)
+                elif quit_button.collidepoint(mouse_pos):
+                    pygame.quit()
+                    quit()
+
+        pygame.display.update()
+        clock.tick(15)
 
 
 def gameLoop():
@@ -164,4 +204,4 @@ def gameLoop():
     quit()
 
 
-gameLoop()
+homePage()
