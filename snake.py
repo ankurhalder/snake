@@ -1,10 +1,14 @@
 import pygame
 import time
 import random
+import os
 
 pygame.init()
 
-width, height = 600, 400
+# Get the dimensions of the screen
+screen_info = pygame.display.Info()
+width, height = screen_info.current_w, screen_info.current_h
+
 block_size = 20
 
 white = (255, 255, 255)
@@ -13,7 +17,7 @@ red = (213, 50, 80)
 green = (0, 255, 0)
 blue = (50, 153, 213)
 
-display = pygame.display.set_mode((width, height))
+display = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
 pygame.display.set_caption("Snake Game")
 
 clock = pygame.time.Clock()
@@ -53,6 +57,7 @@ def homePage():
 
     while home_page:
         display.fill(black)
+        message("Navigate with arrow keys and Enter or E to select", white, -180)
         message("Snake Game By Ankur Halder", white, -150)
 
         button_rects = []
@@ -73,8 +78,6 @@ def homePage():
             "Best Score: " + str(get_high_score()), True, white
         )
         display.blit(best_score_text, [width - 150, 10])
-
-        message("Navigate with arrow keys and Enter or E to select", white, 180)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
