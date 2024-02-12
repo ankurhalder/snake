@@ -1,3 +1,5 @@
 venv
 highscore.txt
 __pycache__
+build
+snake.spec
