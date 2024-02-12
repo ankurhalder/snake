@@ -5,7 +5,6 @@ import os
 
 pygame.init()
 
-# Get the dimensions of the screen
 screen_info = pygame.display.Info()
 width, height = screen_info.current_w, screen_info.current_h
 
@@ -13,7 +12,7 @@ block_size = 20
 
 white = (255, 255, 255)
 black = (0, 0, 0)
-red = (213, 50, 80)
+red = (255, 0, 0)
 green = (0, 255, 0)
 blue = (50, 153, 213)
 
@@ -80,7 +79,9 @@ def homePage():
 
         message("Navigate with arrow keys and Enter or E to select", white, 180)
         message(
-            "To visit more projects like this, go to ankurhalder.github.io", white, 220
+            "To visit more projects like this, go to ankurhalder.github.io",
+            white,
+            height // 2 - 180,
         )
 
         for event in pygame.event.get():
@@ -132,7 +133,6 @@ def gameOver(score):
             else:
                 pygame.draw.rect(display, white, button_rect)
 
-            # Adjust text position to center within each button
             text_surface = font.render(text, True, black)
             text_rect = text_surface.get_rect(center=button_rect.center)
             display.blit(text_surface, text_rect)
@@ -233,12 +233,11 @@ def gameLoop():
                 round(random.randrange(0, height - block_size) / block_size)
                 * block_size
             )
-            snake_length += 1
             score += 10
-
             if score > high_score:
                 high_score = score
                 set_high_score(high_score)
+            snake_length += 1
 
         if lead_x >= width or lead_x < 0 or lead_y >= height or lead_y < 0:
             health -= 1
@@ -279,8 +278,21 @@ def gameLoop():
         high_score_text = font.render("High Score: " + str(high_score), True, white)
         display.blit(high_score_text, [width - 150, 10])
 
-        health_text = font.render("Health: " + str(health), True, white)
-        display.blit(health_text, [10, 30])
+        health_box_size = 20
+        health_x = 10
+        health_y = 30
+
+        for i in range(health):
+            pygame.draw.rect(
+                display,
+                red,
+                [
+                    health_x + i * (health_box_size + 5),
+                    health_y,
+                    health_box_size,
+                    health_box_size,
+                ],
+            )
 
         pygame.display.update()
 
