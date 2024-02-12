@@ -48,37 +48,49 @@ def set_high_score(score):
 def homePage():
     home_page = True
 
-    start_button = pygame.Rect(width / 2 - 100, height / 2 - 50, 200, 50)
-    reset_button = pygame.Rect(width / 2 - 100, height / 2 + 10, 200, 50)
-    quit_button = pygame.Rect(width / 2 - 100, height / 2 + 70, 200, 50)
+    button_texts = ["Start Game", "Reset Best Score", "Quit Game"]
+    selected_button_index = 0
 
     while home_page:
         display.fill(black)
         message("Snake Game By Ankur Halder", white, -150)
 
-        pygame.draw.rect(display, green, start_button)
-        message("Start Game", black, -35)
+        button_rects = []
+        for i, text in enumerate(button_texts):
+            button_rect = pygame.Rect(
+                width / 2 - 100, height / 2 - 50 + i * 60, 200, 50
+            )
+            button_rects.append(button_rect)
 
-        pygame.draw.rect(display, blue, reset_button)
-        message("Reset Best Score", black, 25)
+            if i == selected_button_index:
+                pygame.draw.rect(display, green, button_rect)
+            else:
+                pygame.draw.rect(display, white, button_rect)
 
-        pygame.draw.rect(display, red, quit_button)
-        message("Quit Game", black, 85)
+            message(text, black, -35 + i * 60)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = event.pos
-                if start_button.collidepoint(mouse_pos):
-                    home_page = False
-                    gameLoop()
-                elif reset_button.collidepoint(mouse_pos):
-                    set_high_score(0)
-                elif quit_button.collidepoint(mouse_pos):
-                    pygame.quit()
-                    quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    selected_button_index = (selected_button_index - 1) % len(
+                        button_texts
+                    )
+                elif event.key == pygame.K_DOWN:
+                    selected_button_index = (selected_button_index + 1) % len(
+                        button_texts
+                    )
+                elif event.key == pygame.K_RETURN or event.key == pygame.K_e:
+                    if selected_button_index == 0:
+                        home_page = False
+                        gameLoop()
+                    elif selected_button_index == 1:
+                        set_high_score(0)
+                    elif selected_button_index == 2:
+                        pygame.quit()
+                        quit()
 
         pygame.display.update()
         clock.tick(15)
