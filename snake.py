@@ -57,7 +57,6 @@ def homePage():
 
     while home_page:
         display.fill(black)
-        message("Navigate with arrow keys and Enter or E to select", white, -180)
         message("Snake Game By Ankur Halder", white, -150)
 
         button_rects = []
@@ -79,6 +78,8 @@ def homePage():
         )
         display.blit(best_score_text, [width - 150, 10])
 
+        message("Navigate with arrow keys and Enter or E to select", white, 180)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -95,6 +96,67 @@ def homePage():
                 elif event.key == pygame.K_RETURN or event.key == pygame.K_e:
                     if selected_button_index == 0:
                         home_page = False
+                        gameLoop()
+                    elif selected_button_index == 1:
+                        set_high_score(0)
+                    elif selected_button_index == 2:
+                        pygame.quit()
+                        quit()
+
+        pygame.display.update()
+        clock.tick(15)
+
+
+def gameOver(score):
+    game_over = True
+
+    button_texts = ["Play Again", "Reset Best Score", "Quit"]
+    selected_button_index = 0
+
+    while game_over:
+        display.fill(black)
+        message("Snake Game By Ankur Halder", white, -height // 2 + 50)
+
+        button_rects = []
+        for i, text in enumerate(button_texts):
+            button_rect = pygame.Rect(
+                width / 2 - 100, height / 2 - 50 + i * 60, 200, 50
+            )
+            button_rects.append(button_rect)
+
+            if i == selected_button_index:
+                pygame.draw.rect(display, green, button_rect)
+            else:
+                pygame.draw.rect(display, white, button_rect)
+
+            message(text, black, -height // 2 + 165 + i * 60)
+
+        best_score_text = font.render(
+            "Best Score: " + str(get_high_score()), True, white
+        )
+        display.blit(best_score_text, [width - 150, 10])
+
+        message(
+            "Navigate with arrow keys and Enter or E to select",
+            white,
+            height // 2 - 180,
+        )
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    selected_button_index = (selected_button_index - 1) % len(
+                        button_texts
+                    )
+                elif event.key == pygame.K_DOWN:
+                    selected_button_index = (selected_button_index + 1) % len(
+                        button_texts
+                    )
+                elif event.key == pygame.K_RETURN or event.key == pygame.K_e:
+                    if selected_button_index == 0:
                         gameLoop()
                     elif selected_button_index == 1:
                         set_high_score(0)
@@ -129,21 +191,12 @@ def gameLoop():
     while not game_over:
 
         while game_close == True:
-            display.fill(black)
-            message("You Lost! Press Q to Quit or C to Play Again", red)
-            pygame.display.update()
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        game_over = True
-                        game_close = False
-                    if event.key == pygame.K_c:
-                        gameLoop()
+            gameOver(score)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                game_over = True
+                pygame.quit()
+                quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     lead_x_change = -block_size
